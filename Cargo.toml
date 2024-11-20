@@ -1,0 +1,10 @@
+[package]
+name = "compress"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+rocket = {version = "0.5.1", features = ["json"]}
+diesel = { version = "2.2.0", features = ["postgres"] }
+dotenv = "0.15.0"
+serde = {version = "1.0.215", features = ["derive"]}
