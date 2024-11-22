@@ -3,10 +3,9 @@ use std::{sync::Mutex, time::{SystemTime, UNIX_EPOCH}};
 use rand::RngCore;
 use rocket::http::Status;
 
-use crate::{Label, Thing};
+use crate::{constants::*, Label, Thing};
 
-const SEED: u128 = 358754;
-const DEFAULT_LEN: usize = 16;
+
 
 pub struct Storage {
   pub id: String,

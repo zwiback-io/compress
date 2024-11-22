@@ -1,9 +1,11 @@
 #[macro_use] extern crate rocket;
 
+use constants::HOST;
 use rocket::{http::Status, response::Redirect, serde::json::Json, State};
 use data::{storage::Storage, structs::*};
 
 mod data;
+mod constants;
 
 /*
 --- CONCEPT ---
@@ -38,7 +40,7 @@ fn new(
   let res = strg.set(data.into_inner());
 
   match res {
-      Ok(r) => Ok(r.to_string()),
+      Ok(r) => Ok(format!("{host}/{id}",host = HOST ,id = r.to_string())),
       Err(e) => Err(e)
   }
 }
