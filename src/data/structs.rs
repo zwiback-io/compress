@@ -1,20 +1,11 @@
 use serde::{Deserialize, Serialize};
 
-#[derive(Deserialize, Serialize)]
-pub struct Data {
-  id: String, // not sure if needed
+#[derive(Clone, Serialize, Deserialize, Debug)]
+pub struct Thing {
+  pub slug: Option<String>, // not sure if needed
   pub link: String,
-  pub expiry: Option<i64>,
-  pub slug: String
+  pub expiry: Option<i64>
 }
 
-// Specify the fully-qualified path for the table_name attribute#[derive(Insertable)]
-#[diesel(table_name = schema::human)]
-pub struct NewHuman {
-    pub first_name: String,
-    pub last_name: String,
-    pub age: i32,
-    pub username: String,
-    pub email: String,
-    pub location: String,
-}
+// "id"
+pub struct Label { }

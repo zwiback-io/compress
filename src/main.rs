@@ -1,44 +1,9 @@
 #[macro_use] extern crate rocket;
-extern crate diesel;
 
-use rocket::{http::Status, response::Redirect, serde::json::Json};
-
-use data::structs::*;
-use data::db::*;
+use rocket::{http::Status, response::Redirect, serde::json::Json, State};
+use data::{storage::Storage, structs::*};
 
 mod data;
-
-
-#[launch]
-fn rocket() -> _ {
-  let mut connection = connect();
-  let new_human = NewHuman {
-      first_name: String::from("John"),
-      last_name: String::from("Doe"),
-      age: 30,
-      username: String::from("johndoe"),
-      email: String::from("john.doe@example.com"),
-      location: String::from("New York"),
-  };
-  diesel::insert_into(structs::::table).values(&new_human).execute(&mut connection).expect("Error saving new human");
-
-
-  rocket::build().mount("/", routes![new, get_link])
-}
-
-#[post("/new", data = "<data>")]
-fn new(data: Json<Data>) -> Status {
-  Status::ImATeapot
-}
-
-
-#[get("/<id>")]
-fn get_link(id: &str) -> Redirect {
-  
-  
-  
-  todo!()
-}
 
 /*
 --- CONCEPT ---
@@ -54,3 +19,49 @@ GET /<id> -> REDIRECT
   - redirect
 
 */
+
+#[launch]
+fn rocket() -> _ {
+  let storage = Storage::init();
+  println!("STORAGE ID: {}", storage.id);
+
+  rocket::build()
+  .manage(storage)
+  .mount("/", routes![new, get_thing, del_thing])
+}
+
+#[post("/new", data = "<data>")]
+fn new(
+  strg: &State<Storage>,
+  data: Json<Thing>
+) -> Result<String, Status> {
+  let res = strg.set(data.into_inner());
+
+  match res {
+      Ok(r) => Ok(r.to_string()),
+      Err(e) => Err(e)
+  }
+}
+
+
+#[get("/<id>")]
+fn get_thing(
+  strg: &State<Storage>,
+  id: &str
+) -> Result<Redirect, Status> {
+  let res = strg.get(id.to_string());
+  
+  match res {
+    Some(r) => Ok(Redirect::to(r.link)),
+    None => Err(Status::ImATeapot),
+  }
+}
+
+
+#[delete("/<id>")]
+fn del_thing(
+  strg: &State<Storage>,
+  id: &str
+) -> Status {
+  strg.del(id.to_string())
+}

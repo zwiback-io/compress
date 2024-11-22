@@ -4,7 +4,6 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
+rand = "0.8.5"
 rocket = {version = "0.5.1", features = ["json"]}
-dotenv = "0.15.0"
-serde = {version = "1.0.215", features = ["derive"]}
-diesel = { version = "2.2.5", features = ["sqlite"] }
+serde = { version = "1.0.215", features = ["derive"] }
