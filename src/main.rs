@@ -1,7 +1,8 @@
 #[macro_use] extern crate rocket;
 
 use constants::HOST;
-use rocket::{http::Status, response::Redirect, serde::json::Json, State};
+use docs::{docs_index, favicon};
+use rocket::{http::Status, response::Redirect, route, serde::json::Json, State};
 use data::{storage::Storage, structs::*};
 
 mod data;
@@ -30,6 +31,7 @@ fn rocket() -> _ {
 
   rocket::build()
   .manage(storage)
+  .mount("/", routes![favicon, docs_index])
   .mount("/", routes![new_thing, get_thing, del_thing])
 }
 
