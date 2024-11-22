@@ -6,6 +6,7 @@ use data::{storage::Storage, structs::*};
 
 mod data;
 mod constants;
+mod docs;
 
 /*
 --- CONCEPT ---
@@ -29,11 +30,12 @@ fn rocket() -> _ {
 
   rocket::build()
   .manage(storage)
-  .mount("/", routes![new, get_thing, del_thing])
+  .mount("/", routes![new_thing, get_thing, del_thing])
 }
 
+
 #[post("/new", data = "<data>")]
-fn new(
+fn new_thing(
   strg: &State<Storage>,
   data: Json<Thing>
 ) -> Result<String, Status> {

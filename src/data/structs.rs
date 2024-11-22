@@ -2,9 +2,9 @@ use serde::{Deserialize, Serialize};
 
 #[derive(Clone, Serialize, Deserialize, Debug)]
 pub struct Thing {
-  pub slug: Option<String>, // not sure if needed
+  pub slug: Option<String>,
   pub link: String,
-  pub expiry: Option<i64>
+  pub expiry: Option<i64> // not implemented yet
 }
 
 // "id"
