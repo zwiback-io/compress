@@ -2,13 +2,14 @@
 
 use constants::HOST;
 use docs::{docs_index, favicon};
-use rocket::{http::Status, response::Redirect, route, serde::json::Json, State};
+use guards::ip::RateLimit;
+use rocket::{http::Status, response::Redirect, serde::json::Json, State};
 use data::{storage::Storage, structs::*};
 
 mod data;
 mod constants;
 mod docs;
-
+mod guards;
 /*
 --- CONCEPT ---
 
@@ -39,9 +40,10 @@ fn rocket() -> _ {
 #[post("/new", data = "<data>")]
 fn new_thing(
   strg: &State<Storage>,
-  data: Json<Thing>
+  data: Json<Thing>,
+  owner: RateLimit
 ) -> Result<String, Status> {
-  let res = strg.set(data.into_inner());
+  let res = strg.set(data.into_inner(), owner.ip);
 
   match res {
       Ok(r) => Ok(format!("{host}/{id}",host = HOST ,id = r.to_string())),
@@ -58,7 +60,7 @@ fn get_thing(
   let res = strg.get(id.to_string());
   
   match res {
-    Some(r) => Ok(Redirect::to(r.link)),
+    Some(r) => Ok(Redirect::to(r.data.link)),
     None => Err(Status::ImATeapot),
   }
 }

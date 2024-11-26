@@ -1,5 +1,6 @@
 pub const SEED: u128 = 358754;
 pub const DEFAULT_LEN: usize = 16;
+pub const TIMEOUT: usize = 60 * 5; // 5min
 
 // host stuff 
 pub const HOST: &str = "http://localhost:8000";

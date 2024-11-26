@@ -1,16 +1,17 @@
-use std::{sync::Mutex, time::{SystemTime, UNIX_EPOCH}};
+use std::{net::IpAddr, sync::Mutex, time::{Duration, Instant, SystemTime, UNIX_EPOCH}};
 
 use rand::RngCore;
 use rocket::http::Status;
 
-use crate::{constants::*, Label, Thing};
+use crate::{constants::*, Label, Record, Thing};
 
 
 
 pub struct Storage {
   pub id: String,
-  things: Mutex<Vec<Thing>>,
+  things: Mutex<Vec<Record>>,
 }
+
 
 impl Storage {
   pub fn init() -> Self {
@@ -20,28 +21,37 @@ impl Storage {
     }
   }
 
-  pub fn get(&self, slug: String) -> Option<Thing> {
-    let res = self.things.lock().unwrap().iter().find(|e| e.slug == Some(slug.clone())).cloned();
+  pub fn get(&self, id: String) -> Option<Record> {
+    let res = self.things.lock().unwrap().iter().find(|e| e.data.slug == Some(id.clone())).cloned();
 
     res
   }
 
-  pub fn set(&self, mut thing: Thing) -> Result<String, Status> {
-    thing.slug = Some(Label::new(Some(6)));
+  pub fn set(&self, mut thing: Thing, owner: IpAddr) -> Result<String, Status> {
+    let slug = Some(Label::new(Some(6)));
+    thing.slug = slug.clone();
 
-    let elmnt = self.things.lock().unwrap().iter().find(|e| e.slug == thing.slug /* || e.link == thing.link */).cloned();
-    println!("{:?}", elmnt);
+    let record = Record {
+      owner,
+      data: thing.clone(),
+      last_write: Instant::now()
+    };
+
+    // todo: filter for owner & check time
+
+    let elmnt = self.things.lock().unwrap().iter().find(|e| e.data.slug == slug /* || e.link == thing.link */).cloned();
+
     if elmnt.is_some() {
-    return Err(Status::ImATeapot);
-  }
+      return Err(Status::ImATeapot);
+    }
 
-    self.things.lock().unwrap().push(thing.clone());
+    self.things.lock().unwrap().push(record);
 
     Ok(thing.slug.expect("Unga bunga"))
   }
 
   pub fn del(&self, slug: String) -> Status {
-    self.things.lock().unwrap().retain(|c| c.slug != Some(slug.clone()));
+    self.things.lock().unwrap().retain(|c| c.data.slug != Some(slug.clone()));
 
     Status::Ok
   }
