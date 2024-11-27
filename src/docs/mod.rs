@@ -6,7 +6,7 @@ use crate::constants::NOTFOUND_TEXT;
 
 #[get("/favicon.ico")]
 pub async fn favicon() -> File {
-  File::open(&"./src/docs/favicon.ico").await.ok().unwrap()
+  File::open(&"./docs/favicon.ico").await.ok().unwrap()
 }
 
 #[get("/")]
@@ -21,6 +21,6 @@ pub fn docs_index() -> RawHtml<String> {
 }
 
 fn fetch_doc_page(path: &str) -> Result<String, Error> {
-  let full_path = format!("./src/docs/{}", path);
+  let full_path = format!("./docs/{}", path);
   read_to_string(full_path)
 }  
