@@ -42,7 +42,7 @@ impl Storage {
     let elmnt = self.things.lock().unwrap().iter().find(|e| e.data.slug == slug /* || e.link == thing.link */).cloned();
 
     if elmnt.is_some() {
-      return Err(Status::ImATeapot);
+      return Ok(elmnt.unwrap().data.link);
     }
 
     self.things.lock().unwrap().push(record);

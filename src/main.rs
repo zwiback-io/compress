@@ -3,7 +3,7 @@
 use constants::HOST;
 use docs::{docs_index, favicon};
 use guards::ip::RateLimit;
-use rocket::{http::Status, response::Redirect, serde::json::Json, State};
+use rocket::{http::Status, response::Redirect, State};
 use data::{storage::Storage, structs::*};
 
 mod data;
@@ -40,10 +40,10 @@ fn rocket() -> _ {
 #[post("/new", data = "<data>")]
 fn new_thing(
   strg: &State<Storage>,
-  data: Json<Thing>,
+  data: &str,
   owner: RateLimit
 ) -> Result<String, Status> {
-  let res = strg.set(data.into_inner(), owner.ip);
+  let res = strg.set(Thing {link: data.to_string(), slug: None}, owner.ip);
 
   match res {
       Ok(r) => Ok(format!("{host}/{id}",host = HOST ,id = r.to_string())),

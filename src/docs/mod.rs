@@ -11,7 +11,7 @@ pub async fn favicon() -> File {
 
 #[get("/")]
 pub fn docs_index() -> RawHtml<String> {
-  let res = fetch_doc_page("index.html");
+  let res = fetch_doc_page("index");
 
   match res {
     Ok(r) => RawHtml(r),
@@ -21,6 +21,6 @@ pub fn docs_index() -> RawHtml<String> {
 }
 
 fn fetch_doc_page(path: &str) -> Result<String, Error> {
-  let full_path = format!("./docs/{}", path);
+  let full_path = format!("./docs/{}.html", path);
   read_to_string(full_path)
 }  
