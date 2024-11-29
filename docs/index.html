@@ -8,8 +8,6 @@
 <body>
   <h1>compress - a compact url shortener</h1>
   <div class="contents">
-    <p>[ your regular old url shortener ]</p>
-    <br>
     <p>Simple Website, API & Usage. Handles even the longest links like a proper chap.</p>
     <br>
     <p>Web Version: <a href="http://localhost:8000/web">compress.zwiback.io/web</a></p>
@@ -32,6 +30,12 @@
         Retrieve the url with the given id and redirect to it. 
         <br>
         If no url is found, return a <u>418</u> (it isn't a coffee-pot, after all).
+      </div>
+    </div>
+    <div class="container">
+      <h3>DEL /&lt;id&gt;</h3>
+      <div class="desc">
+        Deletes the url with the given id. 
       </div>
     </div>
   </div>
@@ -61,6 +65,7 @@ body, html {
   font-family: "Crimson Text", serif;
   font-size: 20px;
   padding: 1rem;
+  background-color: #fffcec;
 }
 
 .container {

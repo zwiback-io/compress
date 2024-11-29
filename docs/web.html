@@ -8,7 +8,10 @@
 <body>
   <h1>compress - web version</h1>
   <div class="contents">
-    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ex eligendi similique cupiditate ea vel. Perspiciatis delectus assumenda dicta. Sit incidunt fuga expedita atque molestiae quo. A aliquam expedita fugiat eos?
+    <form onsubmit="submitForm()">
+      <input type="text" placeholder="to-be-shortened url">
+      <button type="submit">-></button>
+    </form>
   </div>
   
 
@@ -36,15 +39,34 @@ body, html {
   font-family: "Crimson Text", serif;
   font-size: 20px;
   padding: 1rem;
+  background-color: #fffcec;
 }
 
-.container {
-  padding-left: 1rem;
-  margin-bottom: 1rem;
+input {
+  font-family: "Crimson Text", serif;
+  font-size: 20px;
+  padding: 0.25rem;
+  border: none;
+  border-bottom: 2px dashed black;
+  background-color: transparent;
+  
+  transition: 0.1s;
 }
 
-.desc {
-  margin-left: 1rem;
+button {
+  font-family: "Crimson Text", serif;
+  font-size: 20px;
+  padding: 0.25rem;
+}
+
+input:focus {
+  outline: none;
+  border-bottom-style: solid;
+  transform: translate(-0.25rem, -0.25rem);
+}
+
+::placeholder {
+  color: rgba(0, 0, 0, 0.7);
 }
 
 .contents {

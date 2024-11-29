@@ -6,7 +6,7 @@ use crate::constants::NOTFOUND_TEXT;
 
 #[get("/favicon.ico")]
 pub async fn favicon() -> File {
-  File::open(&"./docs/favicon.ico").await.ok().unwrap()
+  File::open(&"./docs/images/favicon.ico").await.ok().unwrap()
 }
 
 #[get("/")]
